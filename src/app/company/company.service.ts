@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Company } from './company';
 
@@ -17,14 +17,21 @@ export class CompanyService {
   getCompanies(): Observable<Company[]> {
     return this.httpClient.get<Company[]>(`${this.API_BASE}/company`)
       .pipe(
-        tap(x => console.log('[SERVICE] tap', x)),
-        catchError(error => this.errorHandler(error))
-        )
-      ;
+        tap(x => console.info('[SERVICE] tap', x)),
+        catchError(error => this.errorHandler<Company[]>(error)),
+        finalize(() => console.info('[SERVICE] final'))
+      );
   }
 
-  private errorHandler(error: Error): Observable<Company[]> {
-    console.error('Company Service Error', error);
-    return new Observable<Company[]>();
+  deleteCompany(id: number) : Observable<Company> {
+    return this.httpClient.delete<Company>(`${this.API_BASE}/company/${id}`)
+      .pipe(
+        catchError(error => this.errorHandler<Company>(error))
+      );
+  }
+
+  private errorHandler<T>(error: Error): Observable<T> {
+    console.error('[SERVICE] error', error);
+    return new Observable<T>();
   }
 }
