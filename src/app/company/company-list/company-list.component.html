@@ -1,0 +1,26 @@
+<h1>
+  Companies
+</h1>
+<hr>
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th><button class="btn btn-success">Add</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let company of (companies$ | async)">
+      <td>{{ company.name }}</td>
+      <td>{{ company.email }}</td>
+      <td>{{ company.phone }}</td>
+      <td class="company-actions">
+        <button class="btn btn-primary">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- <pre>{{companies | json }}</pre> -->

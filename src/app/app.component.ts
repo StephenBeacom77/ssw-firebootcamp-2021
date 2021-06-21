@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'fbc-brisbane2021';
+
+  updateTitle(event: Event) {
+    console.log(event);
+  }
 }
+
